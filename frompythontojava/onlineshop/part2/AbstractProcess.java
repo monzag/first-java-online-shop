@@ -15,6 +15,6 @@ public abstract class AbstractProcess {
     public abstract void action(Orderable item);
 
     public void stepAfter() {
-        System.out.println("Your order is finish, thanks!");
+        System.out.println("We send you e-mail with payment details. Thank you for order!");
     }
 }
