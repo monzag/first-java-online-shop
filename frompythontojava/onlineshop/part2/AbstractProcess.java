@@ -9,7 +9,7 @@ public abstract class AbstractProcess {
     }
 
     public void stepBefore() {
-        System.out.println("Order");
+        System.out.println("Your order:");
     }
 
     public abstract void action(Orderable item);
