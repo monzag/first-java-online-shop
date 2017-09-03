@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 public class Basket {
 
-    public ArrayList<Product> productList;
+    private ArrayList<Product> productList;
 
     public Basket() {
         this.productList = new ArrayList<Product>();
@@ -13,6 +13,10 @@ public class Basket {
 
     public ProductIterator getIterator() {
         return new ProductIterator();
+    }
+
+    public ArrayList<Product> getProductList() {
+        return productList;
     }
 
     public void addProduct(Product product) {
@@ -31,7 +35,25 @@ public class Basket {
         return false;
     }
 
-    public class ProductIterator implements Iterator {
+    public void showBasket() {
+        Integer number = 1;
+        for (ProductIterator iter = this.getIterator(); iter.hasNext(); ) {
+            Product productInlist = (Product)iter.next();
+            System.out.println(number + ". " + productInlist);
+            number++;
+        }
+    }
+
+    public Float getTotalPrice() {
+        Float totalPrice = 0.0f;
+        for (ProductIterator iter = this.getIterator(); iter.hasNext(); ) {
+            Product productInlist = (Product)iter.next();
+            totalPrice += productInlist.getDefaultPrice();
+        }
+        return totalPrice;
+    }
+
+    private class ProductIterator implements Iterator {
 
         int index = 0;
 
