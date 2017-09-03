@@ -31,11 +31,11 @@ public class Product {
         return info;
     }
 
-    public static ArrayList getAllProducts() {
+    public static ArrayList<Product> getAllProducts() {
         return productList;
     }
 
-    public static ArrayList getAllProductsBy(ProductCategory productCategory) {
+    public static ArrayList<Product> getAllProductsBy(ProductCategory productCategory) {
         ArrayList<Product> sameCategory = new ArrayList<>();
         for (Product product : productList) {
             if (product.productCategory.equals(productCategory)) {
@@ -43,5 +43,13 @@ public class Product {
             }
         }
         return sameCategory;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Float getDefaultPrice() {
+        return defaultPrice;
     }
 }
