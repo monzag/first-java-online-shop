@@ -9,12 +9,12 @@ public abstract class AbstractProcess {
     }
 
     public void stepBefore() {
-        System.out.println("Your order:");
+        System.out.println("Process");
     }
 
     public abstract void action(Orderable item);
 
     public void stepAfter() {
-        System.out.println("We send you e-mail with payment details. Thank you for order!");
+        System.out.println("Done");
     }
 }
