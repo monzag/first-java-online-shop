@@ -23,8 +23,8 @@ public class Main {
         System.out.println(basket.getProductList());
         basket.addProduct(product);
         System.out.println(basket.getProductList());
-        // basket.removeProduct(product);
-        // System.out.println(basket.productList);
+        basket.removeProduct(product);
+        System.out.println(basket.getProductList());
 
         }
 }
