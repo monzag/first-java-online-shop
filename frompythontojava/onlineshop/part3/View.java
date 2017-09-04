@@ -29,14 +29,12 @@ public class View {
 
     public static void displayOptions(ArrayList<String> options) {
         Integer number = 1;
-
+        System.out.println(" ");
         for (String option : options) {
             System.out.println(String.format("%d. %s", number, option));
             number++;
         }
     }
-
-
 
     public static void printExitMessage() {
         System.out.println("\nGood bye;)");
@@ -47,8 +45,10 @@ public class View {
     }
 
     public static void showProducts(ArrayList<Product> productList) {
+        Integer number = 1;
         for (Product product : productList) {
-            System.out.println(product);
+            System.out.println(number + ". " + product);
+            number++;
         }
     }
 
@@ -87,31 +87,43 @@ public class View {
     public static Product chooseProduct() {
         ArrayList<Product> productList = Product.getAllProducts();
         showProducts(productList);
-        Integer userChoice = View.getNumberInput();
-
         Integer listSize = productList.size();
-        while (!(userChoice < listSize)) {
-            printErrorMessage();
-        }
+        Integer index = getIndex(listSize);
 
-        Product product = productList.get(userChoice - 1);
+        Product product = productList.get(index - 1);
 
         return product;
     }
 
     public static ProductCategory chooseCategory() {
-        showCategories();
-        Integer userChoice = View.getNumberInput();
-
         ArrayList<ProductCategory> categoryList = ProductCategory.getAllCategories();
+        showCategories();
         Integer listSize = categoryList.size();
-        while (!(userChoice < listSize)) {
-            printErrorMessage();
-        }
+        Integer index = getIndex(listSize);
 
-        ProductCategory category = categoryList.get(userChoice - 1);
+        ProductCategory category = categoryList.get(index - 1);
 
         return category;
+    }
+
+    public static Product chooseFromBasket(Basket basket) {
+        ArrayList<Product> basketProducts = basket.getProductList();
+        Integer listSize = basketProducts.size();
+        Integer index = getIndex(listSize);
+
+        Product product = basketProducts.get(index - 1);
+
+        return product;
+    }
+
+    public static Integer getIndex(Integer listSize) {
+        Integer userChoice = getNumberInput();
+        
+        while (userChoice > listSize) {
+            printErrorMessage();
+            userChoice = getNumberInput();
+        }
+        return userChoice;
     }
 
     public static void showCategories() {
@@ -136,26 +148,23 @@ public class View {
     }
 
     public static Float getDefaultPrice() {
-        Float defaultPrice = 2.5f;
+        Float defaultPrice = 2.2f;
         return defaultPrice;
     }
 
     public static void showOrder(String status, Basket basket) {
-        System.out.println("Status: " + status);
+        showStatus(status);
         basket.showBasket();
-        if (basket.getProductList().size() > 0) {
-            Boolean checkout = View.getDecision();
-            if (checkout) {
-                order.changeStatus();
-            }
-        } else {
-            View.emptyBasket();
-        }
+        System.out.println("Checkout");
+    }
+
+    public static void showStatus(String status) {
+        System.out.println("Status: " + status);
     }
 
     public static Boolean getDecision() {
         Scanner input = new Scanner(System.in);
-        System.out.println("Do you want to checkout your order? (y/n): ");
+        System.out.println("Do you want to continue? (y/n): ");
 
         while (!input.hasNext("[y,n]")) {
             printErrorMessage();
@@ -172,5 +181,9 @@ public class View {
 
     public static void emptyBasket() {
         System.out.println("Your basket is empty!");
+    }
+
+    public static void showPayment(Float totalPrice) {
+        System.out.println("Order costs are: " + totalPrice + " zł");
     }
 }
