@@ -28,7 +28,7 @@ public class Basket {
         for (ProductIterator iter = this.getIterator(); iter.hasNext(); ) {
             Product productInlist = (Product)iter.next();
             if (product.equals(productInlist)) {
-                iter.remove();
+                productList.remove(product);
                 return true;
             }
         }
