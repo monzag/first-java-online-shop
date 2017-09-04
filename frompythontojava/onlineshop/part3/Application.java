@@ -4,7 +4,9 @@ import frompythontojava.onlineshop.part1.Basket;
 import frompythontojava.onlineshop.part1.FeaturedProductCategory;
 import frompythontojava.onlineshop.part1.Product;
 import frompythontojava.onlineshop.part1.ProductCategory;
+import frompythontojava.onlineshop.part2.CheckoutProcess;
 import frompythontojava.onlineshop.part2.Order;
+import frompythontojava.onlineshop.part2.PaymentProcess;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,8 +35,8 @@ public class Application {
                 basket.showBasket();
 
             } else if (userChoice.equals("5")) {
-                // remove product from basket.
-                ;
+                removeFromBasket(basket);
+
             } else if (userChoice.equals("6")) {
                 getAllAvailableProducts();
 
@@ -96,16 +98,28 @@ public class Application {
         basket.addProduct(product);
     }
 
+    public static void removeFromBasket(Basket basket) {
+        basket.showBasket();
+        Product product = View.chooseFromBasket(basket);
+        basket.removeProduct(product);
+    }
+
     public static void getAllAvailableProducts() {
         ArrayList<Product> productList = Product.getAllProducts();
         View.showProducts(productList);
     }
 
     public static void getProductsByCategory() {
-        String name = View.getCategoryName();
-        ProductCategory category = new ProductCategory(name);
-        ArrayList<Product> sameCategory = Product.getAllProductsBy(category);
-        View.showProducts(sameCategory);
+        ArrayList<ProductCategory> categoryList = ProductCategory.getAllCategories();
+        String findName = View.getCategoryName();
+        
+        for (ProductCategory category : categoryList) {
+            String name = category.getName();
+            if (name.equals(findName)) {
+                ArrayList<Product> sameCategory = Product.getAllProductsBy(category);
+                View.showProducts(sameCategory);
+            }
+        }  
     }
 
     public static void checkProduct() {
@@ -126,14 +140,38 @@ public class Application {
         String status = order.getStatus();
         View.showOrder(status, basket);
         if (basket.getProductList().size() > 0) {
-            Boolean continues = View.getDecision();
-            if (continues) {
-                order.checkout();
-                basket.getTotalPrice();
+            Boolean wantPay = isCheckout(order);
+            if (wantPay) {
+                pay(basket, order);
             }
-
+                
         } else {
             View.emptyBasket();
         }
     }
-}
+
+    public static Boolean isCheckout(Order order) {
+        Boolean continues = View.getDecision();
+
+        if (continues) {
+            CheckoutProcess checkout = new CheckoutProcess();
+            checkout.process(order);
+            View.showStatus(order.getStatus());
+            return true;
+
+        } else {
+            return false;
+        }
+    }
+
+    public static void pay(Basket basket, Order order) {
+        Float totalPrice = basket.getTotalPrice();
+        View.showPayment(totalPrice);
+        Boolean continues = View.getDecision();
+        if (continues) {
+            PaymentProcess payment = new PaymentProcess();
+            payment.process(order);
+            View.showStatus(order.getStatus());
+        }
+    }
+}   
