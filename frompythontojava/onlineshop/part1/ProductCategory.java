@@ -23,10 +23,6 @@ public class ProductCategory {
         return name;
     }
 
-    public Integer getID() {
-        return ID;
-    }
-
     public String toString() {
         return String.format("Category: %s, id: %d", name, ID);
     }
